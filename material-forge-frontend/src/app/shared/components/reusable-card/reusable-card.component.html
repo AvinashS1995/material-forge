@@ -1,0 +1,54 @@
+<mat-card
+  [class.mf-card--outlined]="outlined"
+  [class.mf-card--clickable]="clickable"
+  [class.mf-card--loading]="loading"
+  class="mf-card"
+  (click)="onCardClick()"
+  [attr.role]="clickable ? 'button' : null"
+  [attr.tabindex]="clickable ? 0 : null">
+
+  @if (loading) {
+    <div class="mf-card__loader">
+      <mat-spinner diameter="32" />
+    </div>
+  }
+
+  @if (image) {
+    <img mat-card-image [src]="image" [alt]="imageAlt || title" class="mf-card__image" />
+  }
+
+  @if (title || subtitle || headerIcon) {
+    <mat-card-header class="mf-card__header">
+      @if (headerIcon) {
+        <div mat-card-avatar class="mf-card__avatar" [style.background]="headerIconColor">
+          <mat-icon>{{ headerIcon }}</mat-icon>
+        </div>
+      }
+      @if (title) { <mat-card-title>{{ title }}</mat-card-title> }
+      @if (subtitle) { <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle> }
+      <span class="spacer"></span>
+      <ng-content select="[cardHeaderActions]" />
+    </mat-card-header>
+  }
+
+  <mat-card-content class="mf-card__content">
+    <ng-content />
+  </mat-card-content>
+
+  @if (actions.length > 0) {
+    <mat-card-actions class="mf-card__actions">
+      @for (action of actions; track action.id) {
+        <button mat-button [color]="action.color ?? 'primary'"
+          [disabled]="action.disabled"
+          (click)="onActionClick(action.id); $event.stopPropagation()">
+          @if (action.icon) { <mat-icon>{{ action.icon }}</mat-icon> }
+          {{ action.label }}
+        </button>
+      }
+    </mat-card-actions>
+  } @else {
+    <mat-card-actions>
+      <ng-content select="[cardActions]" />
+    </mat-card-actions>
+  }
+</mat-card>

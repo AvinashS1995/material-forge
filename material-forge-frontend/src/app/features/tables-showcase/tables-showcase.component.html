@@ -1,0 +1,27 @@
+<app-page-header title="Data Table" subtitle="Reusable table with sorting, pagination, search, selection & actions" icon="table_chart"
+  [breadcrumbs]="[{ label: 'Dashboard', route: '/dashboard' }, { label: 'Components', route: '/components' }, { label: 'Table' }]">
+  @if (selected().length > 0) {
+    <app-reusable-button [label]="'Delete ' + selected().length + ' selected'" icon="delete" variant="stroked" color="warn" />
+  }
+  <app-reusable-button label="Add Employee" icon="add" variant="flat" color="primary" />
+</app-page-header>
+
+<mat-card>
+  <mat-card-content style="padding:0">
+    <app-reusable-table
+      [data]="employees()"
+      [columns]="columns"
+      [actions]="actions"
+      [loading]="loading()"
+      [showSearch]="true"
+      [showPagination]="true"
+      [showSort]="true"
+      [showSelection]="true"
+      [showColumnToggle]="true"
+      [stickyHeader]="true"
+      searchPlaceholder="Search employees..."
+      emptyMessage="No employees found"
+      (actionClick)="onAction($event)"
+      (selectionChange)="onSelectionChange($event)" />
+  </mat-card-content>
+</mat-card>

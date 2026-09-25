@@ -1,0 +1,84 @@
+<app-page-header title="Settings" subtitle="Application preferences and configuration" icon="settings"
+  [breadcrumbs]="[{ label: 'Dashboard', route: '/dashboard' }, { label: 'Settings' }]">
+  <app-reusable-button label="Save Changes" icon="save" variant="flat" color="primary" (clicked)="saveSettings()" />
+</app-page-header>
+
+<div class="settings-grid">
+  <!-- Appearance -->
+  <mat-card>
+    <mat-card-header>
+      <mat-icon mat-card-avatar>palette</mat-icon>
+      <mat-card-title>Appearance</mat-card-title>
+      <mat-card-subtitle>Customize the visual theme</mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider />
+    <mat-card-content class="settings-content">
+      <div class="settings-row">
+        <div class="settings-label">
+          <span>Dark Theme</span>
+          <small>Switch between light and dark mode</small>
+        </div>
+        <mat-slide-toggle
+          [checked]="themeService.isDark()"
+          (change)="themeService.toggleTheme()"
+          color="primary"
+          aria-label="Toggle dark theme">
+        </mat-slide-toggle>
+      </div>
+      <mat-divider />
+      <div class="settings-row">
+        <div class="settings-label">
+          <span>Current Theme</span>
+          <small>Active theme mode</small>
+        </div>
+        <mat-chip-set>
+          <mat-chip [color]="themeService.isDark() ? 'primary' : 'accent'" highlighted>
+            <mat-icon matChipAvatar>{{ themeService.isDark() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+            {{ themeService.isDark() ? 'Dark' : 'Light' }} Mode
+          </mat-chip>
+        </mat-chip-set>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Notifications -->
+  <mat-card>
+    <mat-card-header>
+      <mat-icon mat-card-avatar>notifications</mat-icon>
+      <mat-card-title>Notifications</mat-card-title>
+      <mat-card-subtitle>Control notification preferences</mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider />
+    <mat-card-content class="settings-content">
+      @for (pref of notifPrefs; track pref.id) {
+        <div class="settings-row">
+          <div class="settings-label">
+            <span>{{ pref.label }}</span>
+            <small>{{ pref.description }}</small>
+          </div>
+          <mat-slide-toggle [checked]="pref.enabled" color="primary" [attr.aria-label]="pref.label" />
+        </div>
+        <mat-divider />
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- About -->
+  <mat-card>
+    <mat-card-header>
+      <mat-icon mat-card-avatar>info</mat-icon>
+      <mat-card-title>About {{ appName }}</mat-card-title>
+      <mat-card-subtitle>Application information</mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider />
+    <mat-card-content class="settings-content">
+      @for (info of aboutInfo; track info.label) {
+        <div class="settings-row">
+          <div class="settings-label"><span>{{ info.label }}</span></div>
+          <span class="info-value">{{ info.value }}</span>
+        </div>
+        <mat-divider />
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

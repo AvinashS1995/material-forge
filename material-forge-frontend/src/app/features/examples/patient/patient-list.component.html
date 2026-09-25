@@ -1,0 +1,18 @@
+<app-page-header title="Patient Tracking" subtitle="Track patients, doctors, and prescriptions" icon="local_hospital"
+  [breadcrumbs]="[{ label: 'Dashboard', route: '/dashboard' }, { label: 'Examples' }, { label: 'Patient' }]">
+  <app-reusable-button label="New Patient" icon="add" variant="flat" color="primary"
+    (clicked)="notification.info('Add patient form coming soon!')" />
+</app-page-header>
+
+<div class="mf-grid mf-grid--4" style="margin-bottom:20px">
+  @for (card of statCards; track card.id) { <app-stat-card [card]="card" /> }
+</div>
+
+<mat-card>
+  <mat-card-content style="padding:0">
+    <app-reusable-table [data]="patients()" [columns]="columns" [actions]="actions"
+      [loading]="loading()" [showSearch]="true" [showSelection]="true" [stickyHeader]="true"
+      searchPlaceholder="Search patients..." emptyMessage="No patients found"
+      (actionClick)="onAction($event)" />
+  </mat-card-content>
+</mat-card>

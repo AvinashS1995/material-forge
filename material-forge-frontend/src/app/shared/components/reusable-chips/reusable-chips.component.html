@@ -1,0 +1,35 @@
+<mat-form-field [appearance]="appearance" class="chips-field">
+  @if (label) { <mat-label>{{ label }}@if (required){<span style="color:#f44336;margin-left:2px">*</span>}</mat-label> }
+
+  <mat-chip-grid #chipGrid [attr.aria-label]="label">
+    @for (chip of chips(); track chip) {
+      <mat-chip-row [color]="color" highlighted
+        [removable]="removable && !disabled"
+        (removed)="remove(chip)">
+        {{ chip }}
+        @if (removable && !disabled) {
+          <button matChipRemove [attr.aria-label]="'Remove ' + chip">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        }
+      </mat-chip-row>
+    }
+    <input #chipInput [placeholder]="canAdd ? placeholder : 'Max reached'"
+      [formControl]="inputControl"
+      [matChipInputFor]="chipGrid"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matAutocomplete]="auto"
+      [disabled]="disabled || !canAdd"
+      (matChipInputTokenEnd)="add($event)"
+      (input)="onInput()" />
+  </mat-chip-grid>
+
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    @for (s of filteredSuggestions(); track s) {
+      <mat-option [value]="s">{{ s }}</mat-option>
+    }
+  </mat-autocomplete>
+
+  @if (hint) { <mat-hint>{{ hint }}</mat-hint> }
+  @if (maxChips) { <mat-hint align="end">{{ chips().length }} / {{ maxChips }}</mat-hint> }
+</mat-form-field>

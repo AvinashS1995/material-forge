@@ -1,0 +1,75 @@
+.page-header {
+  padding: 20px 0 16px;
+
+  &__main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__text { flex: 1; min-width: 0; }
+
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__icon {
+    font-size: 1.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--mat-primary, #3f51b5);
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--mf-text-primary, rgba(0,0,0,.87));
+    line-height: 1.2;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: var(--mf-text-secondary, rgba(0,0,0,.54));
+    margin: 4px 0 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+
+  .breadcrumb-link {
+    font-size: 13px;
+    color: var(--mat-primary, #3f51b5);
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+
+  .breadcrumb-sep {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: var(--mf-text-hint, rgba(0,0,0,.38));
+  }
+
+  .breadcrumb-current {
+    font-size: 13px;
+    color: var(--mf-text-secondary, rgba(0,0,0,.54));
+  }
+}

@@ -1,0 +1,14 @@
+<div class="empty-state" [class]="'empty-state--' + size" role="status" aria-live="polite">
+  <div class="empty-state__icon-wrap">
+    <mat-icon class="empty-state__icon">{{ icon }}</mat-icon>
+  </div>
+  <h3 class="empty-state__title">{{ title }}</h3>
+  @if (subtitle) {
+    <p class="empty-state__subtitle">{{ subtitle }}</p>
+  }
+  @if (actionLabel) {
+    <div class="empty-state__action">
+      <ng-content />
+    </div>
+  }
+</div>

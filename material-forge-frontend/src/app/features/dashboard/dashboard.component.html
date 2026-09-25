@@ -1,0 +1,142 @@
+<app-page-header
+  title="Dashboard"
+  subtitle="Welcome to MaterialForge — your Angular Material component system"
+  icon="dashboard"
+  [breadcrumbs]="[{ label: 'Dashboard' }]">
+  <button mat-flat-button color="primary" routerLink="/components">
+    <mat-icon>widgets</mat-icon>
+    Browse Components
+  </button>
+</app-page-header>
+
+<!-- Stat cards -->
+@if (loading()) {
+  <div class="mf-grid mf-grid--3" style="margin-bottom:24px">
+    @for (i of [1,2,3,4,5,6]; track i) {
+      <mat-card style="padding:24px">
+        <app-skeleton-loader [count]="3" [widthVariant]="true" />
+      </mat-card>
+    }
+  </div>
+} @else {
+  <div class="mf-grid mf-grid--3 stats-grid">
+    @for (card of statCards(); track card.id) {
+      <app-stat-card [card]="card" />
+    }
+  </div>
+}
+
+<!-- Main content grid -->
+<div class="dashboard-body">
+  <!-- Component categories -->
+  <div class="dashboard-categories">
+    <div class="mf-section">
+      <h2 class="mf-section__title">
+        <mat-icon>category</mat-icon>
+        Component Categories
+      </h2>
+      <div class="category-grid">
+        @for (cat of categories; track cat.id) {
+          <mat-card class="category-card">
+            <mat-card-content class="category-card__content">
+              <div class="category-card__header">
+                <span class="category-card__name">{{ cat.label }}</span>
+                <mat-chip-set>
+                  <mat-chip>{{ cat.items.length }}</mat-chip>
+                </mat-chip-set>
+              </div>
+              <div class="category-card__items">
+                @for (item of cat.items.slice(0,5); track item.id) {
+                  <a class="cat-item" [routerLink]="item.route">
+                    <mat-icon class="cat-item__icon">{{ item.icon }}</mat-icon>
+                    <span>{{ item.label }}</span>
+                    @if (item.isNew) {
+                      <span class="new-badge">NEW</span>
+                    }
+                  </a>
+                }
+                @if (cat.items.length > 5) {
+                  <span class="more-items">+{{ cat.items.length - 5 }} more</span>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Right panel -->
+  <aside class="dashboard-aside">
+    <!-- Recently added -->
+    @if (recentComponents().length > 0) {
+      <div class="mf-section">
+        <h2 class="mf-section__title">
+          <mat-icon>new_releases</mat-icon>
+          Recently Added
+        </h2>
+        <mat-card>
+          <mat-card-content style="padding:0">
+            @for (item of recentComponents(); track item.id; let last = $last) {
+              <a class="recent-item" [routerLink]="item.route">
+                <mat-icon class="recent-icon">{{ item.icon }}</mat-icon>
+                <div class="recent-text">
+                  <span class="recent-label">{{ item.label }}</span>
+                  <span class="recent-cat">{{ item.category }}</span>
+                </div>
+                <mat-icon class="chevron">chevron_right</mat-icon>
+              </a>
+              @if (!last) { <mat-divider /> }
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
+
+    <!-- Quick links -->
+    <div class="mf-section">
+      <h2 class="mf-section__title">
+        <mat-icon>link</mat-icon>
+        Examples
+      </h2>
+      <mat-card>
+        <mat-card-content style="padding:8px">
+          <a mat-button class="example-link" routerLink="/examples/employee">
+            <mat-icon>people</mat-icon> Employee Management
+          </a>
+          <a mat-button class="example-link" routerLink="/examples/patient">
+            <mat-icon>local_hospital</mat-icon> Patient Tracking
+          </a>
+          <a mat-button class="example-link" routerLink="/examples/sales">
+            <mat-icon>point_of_sale</mat-icon> Sales Management
+          </a>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Stats summary -->
+    @if (stats()) {
+      <div class="mf-section">
+        <h2 class="mf-section__title"><mat-icon>bar_chart</mat-icon> Quick Stats</h2>
+        <mat-card>
+          <mat-card-content class="quick-stats">
+            <div class="quick-stat">
+              <span class="quick-stat__num">{{ stats()!.total }}</span>
+              <span class="quick-stat__label">Total Components</span>
+            </div>
+            <mat-divider />
+            <div class="quick-stat">
+              <span class="quick-stat__num">{{ stats()!.formControls }}</span>
+              <span class="quick-stat__label">Form Controls</span>
+            </div>
+            <mat-divider />
+            <div class="quick-stat">
+              <span class="quick-stat__num">3</span>
+              <span class="quick-stat__label">Example Apps</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
+  </aside>
+</div>

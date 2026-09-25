@@ -1,0 +1,84 @@
+<aside class="sidebar" role="navigation" aria-label="Main navigation">
+  <!-- Sidebar header -->
+  <div class="sidebar__header">
+    <span class="sidebar__title">Navigation</span>
+    <button mat-icon-button class="sidebar__close-btn"
+      (click)="layoutService.closeSidenav()"
+      aria-label="Close sidebar"
+      matTooltip="Close">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+  </div>
+
+  <!-- Nav scroll area -->
+  <nav class="sidebar__nav">
+    @for (category of categories; track category.id) {
+      <!-- Single-item categories (like Dashboard) render flat -->
+      @if (category.items.length === 1) {
+        <a mat-list-item
+          class="nav-item nav-item--single"
+          [routerLink]="category.items[0].route"
+          routerLinkActive="nav-item--active"
+          [routerLinkActiveOptions]="{ exact: category.items[0].route === '/dashboard' }"
+          (click)="closeSidenavIfMobile()"
+          [attr.aria-label]="category.items[0].label">
+          @if (category.items[0].icon) {
+            <mat-icon matListItemIcon>{{ category.items[0].icon }}</mat-icon>
+          }
+          <span matListItemTitle>{{ category.items[0].label }}</span>
+        </a>
+      } @else {
+        <!-- Category group -->
+        <div class="nav-category">
+          <button class="nav-category__header"
+            (click)="toggleCategory(category.id)"
+            [attr.aria-expanded]="isCategoryExpanded(category.id)"
+            [attr.aria-controls]="'cat-' + category.id">
+            <span class="nav-category__label">{{ category.label }}</span>
+            <mat-icon class="nav-category__arrow"
+              [class.nav-category__arrow--open]="isCategoryExpanded(category.id)">
+              expand_more
+            </mat-icon>
+          </button>
+
+          @if (isCategoryExpanded(category.id)) {
+            <div class="nav-category__items" [id]="'cat-' + category.id">
+              @for (item of category.items; track item.id) {
+                <a mat-list-item
+                  class="nav-item"
+                  [routerLink]="item.route"
+                  routerLinkActive="nav-item--active"
+                  (click)="closeSidenavIfMobile()"
+                  [attr.aria-label]="item.label"
+                  [attr.aria-disabled]="item.disabled">
+                  @if (item.icon) {
+                    <mat-icon matListItemIcon class="nav-icon">{{ item.icon }}</mat-icon>
+                  }
+                  <span matListItemTitle>{{ item.label }}</span>
+                  @if (item.isNew) {
+                    <span class="new-badge" matListItemMeta>NEW</span>
+                  }
+                  @if (item.badge) {
+                    <span class="item-badge" matListItemMeta
+                      [class]="'item-badge--' + (item.badgeColor ?? 'primary')">
+                      {{ item.badge }}
+                    </span>
+                  }
+                </a>
+              }
+            </div>
+          }
+        </div>
+      }
+    }
+  </nav>
+
+  <!-- Sidebar footer -->
+  <div class="sidebar__footer">
+    <mat-divider />
+    <div class="sidebar__footer-content">
+      <span class="version">MaterialForge v1.0</span>
+      <span class="built-with">Angular 20 + Material</span>
+    </div>
+  </div>
+</aside>

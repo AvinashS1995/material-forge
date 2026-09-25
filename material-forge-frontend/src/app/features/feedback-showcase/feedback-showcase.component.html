@@ -1,0 +1,126 @@
+<app-page-header title="Feedback & Utilities" subtitle="Snackbar, Progress, Spinner, Tooltip, Badge, Skeleton, Empty State, Dialog" icon="notifications_active"
+  [breadcrumbs]="[{ label: 'Dashboard', route: '/dashboard' }, { label: 'Components', route: '/components' }, { label: 'Feedback' }]" />
+
+<div class="feedback-grid">
+  <!-- Notifications -->
+  <mat-card>
+    <mat-card-header><mat-card-title>Snackbar Notifications</mat-card-title></mat-card-header>
+    <mat-card-content class="btn-group">
+      <app-reusable-button label="Success" icon="check_circle" color="primary" variant="flat" (clicked)="showSuccess()" />
+      <app-reusable-button label="Error" icon="error" color="warn" variant="flat" (clicked)="showError()" />
+      <app-reusable-button label="Warning" icon="warning" variant="stroked" (clicked)="showWarning()" />
+      <app-reusable-button label="Info" icon="info" variant="stroked" (clicked)="showInfo()" />
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Dialog / Confirm -->
+  <mat-card>
+    <mat-card-header><mat-card-title>Confirm Dialog</mat-card-title></mat-card-header>
+    <mat-card-content class="btn-group">
+      <app-reusable-button label="Open Confirm Dialog" icon="open_in_full" variant="flat" color="primary" (clicked)="showConfirm()" />
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Progress -->
+  <mat-card>
+    <mat-card-header><mat-card-title>Progress Indicators</mat-card-title></mat-card-header>
+    <mat-card-content class="progress-section">
+      <p class="section-label">Progress Bar — {{ progressValue() }}%</p>
+      <mat-progress-bar mode="determinate" [value]="progressValue()" />
+      <div class="btn-group" style="margin-top:12px">
+        <button mat-stroked-button (click)="setProgress(25)">25%</button>
+        <button mat-stroked-button (click)="setProgress(50)">50%</button>
+        <button mat-stroked-button (click)="setProgress(75)">75%</button>
+        <button mat-stroked-button (click)="setProgress(100)">100%</button>
+      </div>
+      <mat-divider style="margin:16px 0" />
+      <p class="section-label">Indeterminate</p>
+      <mat-progress-bar mode="indeterminate" />
+      <mat-divider style="margin:16px 0" />
+      <p class="section-label">Spinners</p>
+      <div class="spinner-row">
+        <mat-spinner diameter="24" />
+        <mat-spinner diameter="36" />
+        <mat-spinner diameter="48" color="accent" />
+        <mat-spinner diameter="36" mode="determinate" [value]="progressValue()" />
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tooltips & Badges -->
+  <mat-card>
+    <mat-card-header><mat-card-title>Tooltips & Badges</mat-card-title></mat-card-header>
+    <mat-card-content class="btn-group">
+      <button mat-raised-button color="primary" matTooltip="This is a tooltip on top" matTooltipPosition="above">Hover me (Top)</button>
+      <button mat-raised-button matTooltip="Tooltip on the right" matTooltipPosition="right">Hover me (Right)</button>
+      <button mat-icon-button color="primary"
+        matBadge="5" matBadgeColor="warn" matBadgeSize="medium" aria-label="Notifications">
+        <mat-icon>notifications</mat-icon>
+      </button>
+      <button mat-icon-button color="accent"
+        matBadge="99+" matBadgeColor="primary" aria-label="Messages">
+        <mat-icon>mail</mat-icon>
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Chips -->
+  <mat-card>
+    <mat-card-header><mat-card-title>Chips</mat-card-title></mat-card-header>
+    <mat-card-content>
+      <mat-chip-set aria-label="Technology chips">
+        <mat-chip>Angular</mat-chip>
+        <mat-chip color="primary" highlighted>TypeScript</mat-chip>
+        <mat-chip color="accent" highlighted>Material UI</mat-chip>
+        <mat-chip>RxJS</mat-chip>
+        <mat-chip color="warn" highlighted>Signals</mat-chip>
+        <mat-chip [disabled]="true">Disabled</mat-chip>
+      </mat-chip-set>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Skeleton Loader -->
+  <mat-card>
+    <mat-card-header><mat-card-title>Skeleton Loader</mat-card-title>
+      <button mat-button color="primary" (click)="toggleSkeleton()" style="margin-left:auto">
+        {{ showSkeleton() ? 'Show Content' : 'Show Skeleton' }}
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      @if (showSkeleton()) {
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <app-skeleton-loader [count]="1" height="48px" width="48px" [circle]="true" />
+          <div style="flex:1">
+            <app-skeleton-loader [count]="3" [widthVariant]="true" height="16px" />
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <app-skeleton-loader [count]="4" [widthVariant]="true" height="14px" />
+        </div>
+      } @else {
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="width:48px;height:48px;border-radius:50%;background:#3949ab;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">A</div>
+          <div>
+            <div style="font-weight:600">Admin User</div>
+            <div style="font-size:13px;color:var(--mf-text-secondary)">admin&#64;materialforge.dev</div>
+            <div style="font-size:12px;color:var(--mf-text-hint);margin-top:2px">Angular 20 developer building reusable components</div>
+          </div>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Empty State -->
+  <mat-card>
+    <mat-card-header><mat-card-title>Empty States</mat-card-title></mat-card-header>
+    <mat-card-content>
+      <div class="empty-states-row">
+        <app-empty-state icon="inbox" title="No messages" subtitle="Your inbox is empty" size="small" />
+        <mat-divider [vertical]="true" />
+        <app-empty-state icon="search_off" title="No results" subtitle="Try different keywords" size="small" />
+        <mat-divider [vertical]="true" />
+        <app-empty-state icon="cloud_off" title="No connection" subtitle="Check your internet" size="small" />
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

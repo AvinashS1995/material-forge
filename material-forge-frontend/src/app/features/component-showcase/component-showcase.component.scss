@@ -1,0 +1,63 @@
+.component-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.component-card {
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12) !important; transform: translateY(-2px); }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px !important;
+  }
+
+  &__icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(var(--mat-primary-rgb, 57,73,171), .1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon { color: var(--mat-primary); font-size: 22px; }
+  }
+
+  &__info { flex: 1; min-width: 0; }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mf-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: var(--mf-text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__arrow { color: var(--mf-text-hint); font-size: 20px; }
+}
+
+.new-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #4caf50;
+  color: #fff;
+}

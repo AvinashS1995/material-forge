@@ -1,0 +1,24 @@
+<div class="app-shell">
+  <app-header />
+
+  <mat-sidenav-container class="sidenav-container" autosize>
+    <mat-sidenav
+      #sidenav
+      [mode]="layoutService.sidenavMode()"
+      [opened]="layoutService.sidenavOpen()"
+      (openedChange)="$event ? layoutService.openSidenav() : layoutService.closeSidenav()"
+      class="app-sidenav"
+      [fixedInViewport]="false"
+      [attr.aria-label]="'Navigation sidebar'">
+      <app-sidebar />
+    </mat-sidenav>
+
+    <mat-sidenav-content class="sidenav-content">
+      <main class="main-content" id="main-content" tabindex="-1">
+        <div class="content-wrapper">
+          <router-outlet />
+        </div>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

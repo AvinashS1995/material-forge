@@ -1,0 +1,176 @@
+<app-page-header
+  title="Form Controls"
+  subtitle="Reusable reactive form components with validation, signals & ControlValueAccessor"
+  icon="edit"
+  [breadcrumbs]="[{ label: 'Dashboard', route: '/dashboard' }, { label: 'Components', route: '/components' }, { label: 'Form Controls' }]">
+</app-page-header>
+
+<div class="forms-layout">
+  <!-- Component selector sidebar -->
+  <mat-card class="forms-nav">
+    <mat-card-content>
+      <p class="forms-nav__title">Components</p>
+      @for (comp of formComponents; track comp.id) {
+        <button mat-button class="forms-nav__btn"
+          [class.active]="activeComponent() === comp.id"
+          (click)="setActiveComponent(comp.id)">
+          <mat-icon>{{ comp.icon }}</mat-icon>
+          {{ comp.label }}
+        </button>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Playground -->
+  <div class="forms-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <mat-card class="playground-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>{{ currentComp?.icon }}</mat-icon>
+          <mat-card-title>{{ currentComp?.label }}</mat-card-title>
+          <mat-card-subtitle>{{ currentComp?.description }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-divider />
+        <mat-card-content class="playground-content">
+
+          @switch (activeComponent()) {
+            @case ('input') {
+              <div class="mf-form-row">
+                <app-reusable-input label="Full Name" placeholder="Enter your full name"
+                  prefixIcon="person" [control]="nameControl" [required]="true"
+                  hint="Your legal full name" [maxLength]="100" />
+                <app-reusable-input label="Email Address" placeholder="you@example.com"
+                  prefixIcon="email" type="email" [control]="emailControl" [required]="true" />
+              </div>
+              <div class="mf-form-row">
+                <app-reusable-input label="Phone Number" placeholder="+91 98765 43210"
+                  prefixIcon="phone" [control]="phoneControl" [required]="true" />
+                <app-reusable-input label="Password" type="password" placeholder="Min 8 characters"
+                  prefixIcon="lock" [control]="passwordControl" [required]="true" [showPasswordToggle]="true" />
+              </div>
+              <div class="mf-form-row">
+                <app-reusable-input label="Search" type="search" placeholder="Search anything..."
+                  prefixIcon="search" suffixIcon="tune" />
+                <app-reusable-input label="Salary" type="number" placeholder="0.00"
+                  prefix="₹" suffix="per month" />
+              </div>
+            }
+
+            @case ('select') {
+              <div class="mf-form-row">
+                <app-reusable-select label="Department" [options]="departmentOptions"
+                  [control]="deptControl" [required]="true" [showClear]="true" />
+                <app-reusable-select label="Speciality" [options]="specialityOptions"
+                  [control]="specialityControl" [required]="true" [searchable]="true"
+                  hint="Type to search specialities" />
+              </div>
+              <div class="mf-form-row">
+                <app-reusable-select label="Skills (Multi)" [options]="multiOptions"
+                  [multiple]="true" [showSelectAll]="true" [showClear]="true" />
+              </div>
+            }
+
+            @case ('autocomplete') {
+              <div class="mf-form-row">
+                <app-reusable-autocomplete label="Select Doctor" [options]="doctorOptions"
+                  [control]="doctorControl" hint="Start typing doctor name" [showClear]="true" />
+                <app-reusable-autocomplete label="Select Speciality" [options]="specialityOptions"
+                  hint="Search speciality" />
+              </div>
+            }
+
+            @case ('checkbox') {
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <app-reusable-checkbox label="I agree to Terms & Conditions"
+                  [control]="agreeControl" hint="You must agree to proceed" />
+                <app-reusable-checkbox label="Subscribe to newsletter" [color]="'accent'" />
+                <app-reusable-checkbox label="Disabled option" [disabled]="true" />
+              </div>
+            }
+
+            @case ('radio') {
+              <app-reusable-radio label="Gender" [options]="genderOptions"
+                [control]="genderControl" layout="row" />
+            }
+
+            @case ('toggle') {
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <mat-slide-toggle formControlName="notifications" color="primary">
+                  Enable notifications
+                </mat-slide-toggle>
+                <mat-slide-toggle color="accent">Dark mode preview</mat-slide-toggle>
+                <mat-slide-toggle [disabled]="true">Disabled toggle</mat-slide-toggle>
+              </div>
+            }
+
+            @case ('slider') {
+              <app-reusable-slider label="Experience Level" [min]="0" [max]="100"
+                [control]="ratingControl" unit="%" [discrete]="true" hint="Drag to set level" />
+            }
+
+            @case ('datepicker') {
+              <div class="mf-form-row">
+                <app-reusable-datepicker label="Joining Date" placeholder="Select date"
+                  [control]="joinDateControl" hint="When did you join?" />
+                <app-reusable-datepicker label="Date of Birth" [required]="true"
+                  [max]="maxBirthDate" />
+              </div>
+            }
+
+            @case ('chips') {
+              <app-reusable-chips label="Skills & Technologies" [control]="skillsControl"
+                [suggestions]="skillSuggestions" hint="Add skills, press Enter or comma"
+                [maxChips]="10" />
+            }
+
+            @case ('file-upload') {
+              <app-reusable-file-upload label="Upload Documents"
+                [control]="docsControl"
+                accept=".pdf,.doc,.docx,.jpg,.png"
+                [multiple]="true"
+                hint="Supported: PDF, Word, Images. Max 10MB each." />
+            }
+          }
+
+        </mat-card-content>
+        <mat-divider />
+        <mat-card-actions class="playground-actions">
+          <app-reusable-button label="Reset" variant="stroked" (clicked)="resetForm()" />
+          <app-reusable-button label="Submit Form" icon="send" variant="flat" color="primary"
+            type="submit" [loading]="submitting()" />
+        </mat-card-actions>
+      </mat-card>
+    </form>
+
+    <!-- Full demo form -->
+    <mat-expansion-panel class="demo-form-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>integration_instructions</mat-icon> Complete Form Demo</mat-panel-title>
+        <mat-panel-description>All components together in one reactive form</mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="complete-form">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+          <div class="mf-form-row">
+            <app-reusable-input label="Full Name" [control]="nameControl" [required]="true" prefixIcon="person" />
+            <app-reusable-input label="Email" type="email" [control]="emailControl" [required]="true" prefixIcon="email" />
+          </div>
+          <div class="mf-form-row">
+            <app-reusable-select label="Department" [options]="departmentOptions" [control]="deptControl" [required]="true" />
+            <app-reusable-datepicker label="Join Date" [control]="joinDateControl" />
+          </div>
+          <div class="mf-form-row">
+            <app-reusable-autocomplete label="Preferred Doctor" [options]="doctorOptions" [control]="doctorControl" />
+            <app-reusable-radio label="Gender" [options]="genderOptions" [control]="genderControl" layout="row" />
+          </div>
+          <app-reusable-chips label="Skills" [control]="skillsControl" [suggestions]="skillSuggestions" />
+          <div style="margin-top:16px">
+            <app-reusable-checkbox label="I agree to the Terms & Conditions" [control]="agreeControl" />
+          </div>
+          <div class="form-actions">
+            <app-reusable-button label="Submit" variant="flat" color="primary" type="submit" [loading]="submitting()" />
+          </div>
+        </form>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div>

@@ -1,0 +1,268 @@
+// Angular Material prebuilt theme
+@use '@angular/material' as mat;
+
+// ─── Typography ───────────────────────────────────────────
+@include mat.core();
+
+// ─── Material Icons font fix ──────────────────────────────
+// Ensures ligature-based icon rendering works correctly
+.material-icons,
+.material-icons-outlined,
+.material-icons-round,
+.material-icons-sharp,
+.material-icons-two-tone {
+  font-family: 'Material Icons', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+}
+
+// Angular Material mat-icon host element
+mat-icon.mat-icon {
+  font-family: 'Material Icons', sans-serif !important;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  overflow: visible;
+  vertical-align: middle;
+}
+
+$mf-primary: mat.m2-define-palette(mat.$m2-indigo-palette, 600, 400, 900);
+$mf-accent:  mat.m2-define-palette(mat.$m2-pink-palette,   A200, A100, A400);
+$mf-warn:    mat.m2-define-palette(mat.$m2-red-palette);
+
+$mf-light-theme: mat.m2-define-light-theme((
+  color: (primary: $mf-primary, accent: $mf-accent, warn: $mf-warn),
+  typography: mat.m2-define-typography-config(),
+  density: 0,
+));
+
+$mf-dark-theme: mat.m2-define-dark-theme((
+  color: (primary: $mf-primary, accent: $mf-accent, warn: $mf-warn),
+  typography: mat.m2-define-typography-config(),
+  density: 0,
+));
+
+// Apply light theme globally
+@include mat.all-component-themes($mf-light-theme);
+
+// Dark theme scoped to body.dark-theme
+.dark-theme {
+  @include mat.all-component-colors($mf-dark-theme);
+}
+
+// ─── CSS Variables — Light Theme ──────────────────────────
+:root, .light-theme {
+  --mf-bg:                #f5f5f5;
+  --mf-surface:           #ffffff;
+  --mf-surface-raised:    #ffffff;
+  --mf-sidebar-bg:        #ffffff;
+  --mf-sidebar-color:     rgba(0,0,0,.87);
+  --mf-toolbar-bg:        #3949ab;
+  --mf-toolbar-color:     #ffffff;
+  --mf-text-primary:      rgba(0,0,0,.87);
+  --mf-text-secondary:    rgba(0,0,0,.6);
+  --mf-text-hint:         rgba(0,0,0,.38);
+  --mf-divider:           rgba(0,0,0,.12);
+  --mf-row-hover:         rgba(0,0,0,.04);
+  --mf-nav-hover:         rgba(63,81,181,.08);
+  --mf-nav-active-bg:     rgba(63,81,181,.12);
+  --mf-bg-subtle:         rgba(0,0,0,.03);
+  --mf-skeleton-base:     #e0e0e0;
+  --mf-skeleton-shine:    #f5f5f5;
+  --mat-primary:          #3949ab;
+  --mat-primary-rgb:      57,73,171;
+  --mat-accent:           #ff4081;
+}
+
+// ─── CSS Variables — Dark Theme ───────────────────────────
+.dark-theme {
+  --mf-bg:                #121212;
+  --mf-surface:           #1e1e1e;
+  --mf-surface-raised:    #2c2c2c;
+  --mf-sidebar-bg:        #1a1a1a;
+  --mf-sidebar-color:     rgba(255,255,255,.87);
+  --mf-toolbar-bg:        #1a1a2e;
+  --mf-toolbar-color:     rgba(255,255,255,.87);
+  --mf-text-primary:      rgba(255,255,255,.87);
+  --mf-text-secondary:    rgba(255,255,255,.6);
+  --mf-text-hint:         rgba(255,255,255,.38);
+  --mf-divider:           rgba(255,255,255,.12);
+  --mf-row-hover:         rgba(255,255,255,.05);
+  --mf-nav-hover:         rgba(121,134,203,.12);
+  --mf-nav-active-bg:     rgba(121,134,203,.2);
+  --mf-bg-subtle:         rgba(255,255,255,.04);
+  --mf-skeleton-base:     #333;
+  --mf-skeleton-shine:    #444;
+  --mat-primary:          #7986cb;
+  --mat-primary-rgb:      121,134,203;
+  --mat-accent:           #ff80ab;
+}
+
+// ─── Global Reset & Base ──────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+  background: var(--mf-bg);
+  color: var(--mf-text-primary);
+  transition: background 0.25s ease, color 0.25s ease;
+  min-height: 100vh;
+}
+
+// ─── Typography helpers ───────────────────────────────────
+h1, h2, h3, h4, h5, h6 { margin: 0; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--mat-primary, #3949ab); }
+
+// ─── Scrollbar ────────────────────────────────────────────
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--mf-divider);
+  border-radius: 3px;
+  &:hover { background: var(--mf-text-hint); }
+}
+
+// ─── Material Snackbar styles ─────────────────────────────
+.mf-snackbar {
+  border-radius: 8px !important;
+  font-size: 14px;
+
+  &--success .mat-mdc-snack-bar-container { background: #388e3c !important; color: #fff !important; }
+  &--error   .mat-mdc-snack-bar-container { background: #d32f2f !important; color: #fff !important; }
+  &--warning .mat-mdc-snack-bar-container { background: #f57c00 !important; color: #fff !important; }
+  &--info    .mat-mdc-snack-bar-container { background: #1976d2 !important; color: #fff !important; }
+}
+
+// ─── Dialog global styles ─────────────────────────────────
+.mf-dialog {
+  .mat-mdc-dialog-container { border-radius: 12px !important; }
+  &--fullscreen .mat-mdc-dialog-container { border-radius: 0 !important; }
+}
+
+// ─── Material overrides ───────────────────────────────────
+.mat-mdc-card {
+  border-radius: 12px !important;
+  background: var(--mf-surface) !important;
+}
+
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background: var(--mf-surface) !important;
+  }
+}
+
+.mat-drawer-container {
+  background: var(--mf-bg) !important;
+}
+
+.mat-mdc-menu-panel {
+  border-radius: 8px !important;
+  min-width: 180px !important;
+}
+
+.mat-mdc-tab-group {
+  background: var(--mf-surface);
+  border-radius: 8px;
+}
+
+// ─── Utility classes ──────────────────────────────────────
+.mf-grid {
+  display: grid;
+  gap: 16px;
+
+  &--2 { grid-template-columns: repeat(2, 1fr); }
+  &--3 { grid-template-columns: repeat(3, 1fr); }
+  &--4 { grid-template-columns: repeat(4, 1fr); }
+
+  @media (max-width: 960px) {
+    &--4 { grid-template-columns: repeat(2, 1fr); }
+    &--3 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    &--2, &--3, &--4 { grid-template-columns: 1fr; }
+  }
+}
+
+.mf-section {
+  margin-bottom: 32px;
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--mf-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--mf-divider);
+  }
+}
+
+.mf-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  gap: 4px;
+
+  &--green   { background: rgba(76,175,80,.15);  color: #2e7d32; }
+  &--red     { background: rgba(244,67,54,.15);  color: #c62828; }
+  &--orange  { background: rgba(255,152,0,.15);  color: #e65100; }
+  &--blue    { background: rgba(33,150,243,.15); color: #1565c0; }
+  &--purple  { background: rgba(156,39,176,.15); color: #6a1b9a; }
+  &--gray    { background: rgba(158,158,158,.15); color: #424242; }
+}
+
+.mf-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+// Responsive table scroll
+.table-responsive { overflow-x: auto; }
+
+// Focus ring for accessibility
+:focus-visible {
+  outline: 2px solid var(--mat-primary, #3949ab);
+  outline-offset: 2px;
+}
+
+// Skip link
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--mat-primary);
+  color: #fff;
+  padding: 8px 16px;
+  z-index: 9999;
+  &:focus { top: 0; }
+}

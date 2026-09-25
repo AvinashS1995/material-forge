@@ -1,0 +1,29 @@
+<app-page-header title="Components" subtitle="All reusable Material components" icon="widgets"
+  [breadcrumbs]="[{ label: 'Dashboard', route: '/dashboard' }, { label: 'Components' }]" />
+
+@for (cat of categories; track cat.id) {
+  <div class="mf-section">
+    <h2 class="mf-section__title"><mat-icon>{{ cat.items[0]?.icon }}</mat-icon>{{ cat.label }}</h2>
+    <div class="component-grid">
+      @for (item of cat.items; track item.id) {
+        <mat-card class="component-card" [routerLink]="item.route">
+          <mat-card-content class="component-card__content">
+            <div class="component-card__icon-wrap">
+              <mat-icon>{{ item.icon }}</mat-icon>
+            </div>
+            <div class="component-card__info">
+              <div class="component-card__name">
+                {{ item.label }}
+                @if (item.isNew) { <span class="new-badge">NEW</span> }
+              </div>
+              @if (item.description) {
+                <p class="component-card__desc">{{ item.description }}</p>
+              }
+            </div>
+            <mat-icon class="component-card__arrow">chevron_right</mat-icon>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+}

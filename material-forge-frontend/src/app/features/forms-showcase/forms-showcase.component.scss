@@ -1,0 +1,74 @@
+.forms-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
+  align-items: start;
+
+  @media (max-width: 768px) { grid-template-columns: 1fr; }
+}
+
+.forms-nav {
+  position: sticky;
+  top: 80px;
+
+  @media (max-width: 768px) { position: static; }
+
+  &__title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--mf-text-secondary);
+    margin: 0 0 8px;
+    padding: 0 8px;
+  }
+
+  &__btn {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+    color: var(--mf-text-secondary);
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin: 1px 0;
+
+    &.active {
+      background: rgba(var(--mat-primary-rgb, 57,73,171),.1);
+      color: var(--mat-primary);
+    }
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  }
+}
+
+.forms-content { display: flex; flex-direction: column; gap: 20px; }
+
+.playground-card {
+  mat-card-header { padding: 16px 16px 12px; }
+
+  ::ng-deep .mat-mdc-card-avatar {
+    background: rgba(var(--mat-primary-rgb, 57,73,171),.1);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--mat-primary);
+  }
+}
+
+.playground-content { padding: 20px 16px !important; }
+
+.playground-actions {
+  padding: 12px 16px !important;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.demo-form-panel {
+  mat-panel-title { display: flex; align-items: center; gap: 8px; }
+}
+
+.complete-form { padding: 16px 0; display: flex; flex-direction: column; gap: 12px; }
+
+.form-actions { display: flex; justify-content: flex-end; margin-top: 8px; }

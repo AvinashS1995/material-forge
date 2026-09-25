@@ -1,0 +1,164 @@
+<mat-toolbar class="app-toolbar" role="banner">
+  <!-- Menu toggle -->
+  <button mat-icon-button class="menu-btn"
+    (click)="layoutService.toggleSidenav()"
+    matTooltip="Toggle sidebar"
+    aria-label="Toggle sidebar navigation">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Brand -->
+  <a routerLink="/dashboard" class="brand" aria-label="{{ appName }} home">
+    <div class="brand__icon">
+      <mat-icon>bolt</mat-icon>
+    </div>
+    <span class="brand__name">{{ appName }}</span>
+  </a>
+
+  <!-- Desktop search -->
+  <div class="search-container" [class.search-container--open]="searchService.isOpen()">
+    <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [formControl]="searchControl"
+        placeholder="Search components..."
+        aria-label="Search components"
+        autocomplete="off"
+        (focus)="searchControl.value?.length ? searchService.open() : null" />
+      @if (searchControl.value) {
+        <button mat-icon-button matSuffix type="button" (click)="clearSearch()" aria-label="Clear search">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+
+    <!-- Search dropdown -->
+    @if (searchService.isOpen() && searchControl.value) {
+      <div class="search-results" role="listbox" aria-label="Search results">
+        @if (searchService.loading()) {
+          <div class="search-results__loading">
+            <mat-icon class="spin">autorenew</mat-icon>
+            <span>Searching...</span>
+          </div>
+        } @else if (searchService.hasResults()) {
+          @for (result of searchService.results(); track result.id) {
+            <a class="search-result-item" [routerLink]="result.route"
+              (click)="navigateToResult(result.route)"
+              role="option">
+              <mat-icon class="result-icon">{{ result.icon }}</mat-icon>
+              <div class="result-text">
+                <span class="result-label">{{ result.label }}</span>
+                <span class="result-category">{{ result.category }}</span>
+              </div>
+            </a>
+          }
+        } @else {
+          <div class="search-results__empty">
+            <mat-icon>search_off</mat-icon>
+            <span>No results for "{{ searchControl.value }}"</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <span class="spacer"></span>
+
+  <!-- Mobile search toggle -->
+  <button mat-icon-button class="mobile-search-btn"
+    (click)="toggleMobileSearch()"
+    aria-label="Search"
+    matTooltip="Search">
+    <mat-icon>search</mat-icon>
+  </button>
+
+  <!-- Theme toggle -->
+  <button mat-icon-button
+    (click)="themeService.toggleTheme()"
+    [matTooltip]="themeService.isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
+    [attr.aria-label]="themeService.isDark() ? 'Switch to light theme' : 'Switch to dark theme'">
+    <mat-icon>{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+
+  <!-- Notifications -->
+  <button mat-icon-button [matMenuTriggerFor]="notifMenu"
+    aria-label="Notifications"
+    [matBadge]="notificationService.unreadCount() || null"
+    matBadgeColor="warn"
+    matBadgeSize="small"
+    [matBadgeHidden]="notificationService.unreadCount() === 0">
+    <mat-icon>notifications</mat-icon>
+  </button>
+
+  <mat-menu #notifMenu="matMenu" class="notif-menu">
+    <div class="notif-header" (click)="$event.stopPropagation()">
+      <span class="notif-title">Notifications</span>
+      @if (notificationService.unreadCount() > 0) {
+        <button mat-button color="primary" (click)="markAllNotificationsRead()">Mark all read</button>
+      }
+    </div>
+    <mat-divider />
+    @if (notificationService.notifications().length === 0) {
+      <div class="notif-empty">
+        <mat-icon>notifications_none</mat-icon>
+        <span>No notifications</span>
+      </div>
+    } @else {
+      @for (notif of notificationService.notifications().slice(0, 8); track notif.id) {
+        <button mat-menu-item class="notif-item" [class.notif-item--unread]="!notif.read"
+          (click)="notificationService.markRead(notif.id)">
+          <mat-icon [class]="'notif-icon notif-icon--' + notif.type">
+            {{ notif.type === 'success' ? 'check_circle' : notif.type === 'error' ? 'error' : notif.type === 'warning' ? 'warning' : 'info' }}
+          </mat-icon>
+          <div class="notif-content">
+            <span class="notif-message">{{ notif.message }}</span>
+            <span class="notif-time">{{ notif.timestamp | date:'shortTime' }}</span>
+          </div>
+        </button>
+      }
+      <mat-divider />
+      <button mat-menu-item (click)="clearNotifications()" class="clear-notif-btn">
+        <mat-icon>delete_sweep</mat-icon>
+        <span>Clear all</span>
+      </button>
+    }
+  </mat-menu>
+
+  <!-- User avatar -->
+  <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
+    <div class="user-avatar">A</div>
+  </button>
+
+  <mat-menu #userMenu="matMenu">
+    <div class="user-info" (click)="$event.stopPropagation()">
+      <div class="user-avatar user-avatar--lg">A</div>
+      <div>
+        <div class="user-name">Admin User</div>
+        <div class="user-email">admin&#64;materialforge.dev</div>
+      </div>
+    </div>
+    <mat-divider />
+    <button mat-menu-item routerLink="/settings">
+      <mat-icon>settings</mat-icon><span>Settings</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>help_outline</mat-icon><span>Help</span>
+    </button>
+    <mat-divider />
+    <button mat-menu-item>
+      <mat-icon>logout</mat-icon><span>Sign out</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<!-- Mobile search bar -->
+@if (showMobileSearch()) {
+  <div class="mobile-search-bar">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="mobile-search-field">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [formControl]="searchControl" placeholder="Search components..." autofocus aria-label="Search" />
+    </mat-form-field>
+    <button mat-icon-button (click)="toggleMobileSearch()" aria-label="Close search">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+}

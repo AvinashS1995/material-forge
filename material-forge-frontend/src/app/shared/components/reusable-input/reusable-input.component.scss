@@ -1,0 +1,22 @@
+.mf-input {
+  width: 100%;
+}
+
+.required-star {
+  color: var(--mat-form-field-error-text-color, #f44336);
+  margin-left: 2px;
+}
+
+.field-icon {
+  color: var(--mf-text-secondary, rgba(0,0,0,.54));
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+}
+
+.field-prefix,
+.field-suffix {
+  color: var(--mf-text-secondary, rgba(0,0,0,.54));
+  font-size: 14px;
+}

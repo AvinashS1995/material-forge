@@ -1,0 +1,29 @@
+<app-page-header title="Employee Management" subtitle="Full CRUD example using reusable components" icon="people"
+  [breadcrumbs]="[{ label: 'Dashboard', route: '/dashboard' }, { label: 'Examples' }, { label: 'Employee' }]">
+  <app-reusable-button label="Add Employee" icon="add" variant="flat" color="primary"
+    (clicked)="notification.info('Add employee dialog coming soon!')" />
+</app-page-header>
+
+<div class="mf-grid mf-grid--4" style="margin-bottom:20px">
+  @for (card of statCards; track card.id) {
+    <app-stat-card [card]="card" />
+  }
+</div>
+
+<mat-card>
+  <mat-card-content style="padding:0">
+    <app-reusable-table
+      [data]="employees()"
+      [columns]="columns"
+      [actions]="actions"
+      [loading]="loading()"
+      [showSearch]="true"
+      [showSelection]="true"
+      [showColumnToggle]="true"
+      [stickyHeader]="true"
+      searchPlaceholder="Search employees by name, email, department..."
+      emptyMessage="No employees found"
+      (actionClick)="onAction($event)"
+      (selectionChange)="selected.set($event)" />
+  </mat-card-content>
+</mat-card>

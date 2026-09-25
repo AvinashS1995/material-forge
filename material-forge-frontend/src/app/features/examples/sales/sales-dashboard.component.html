@@ -1,0 +1,31 @@
+<app-page-header title="Sales Management" subtitle="Orders, customers and revenue tracking" icon="point_of_sale"
+  [breadcrumbs]="[{ label: 'Dashboard', route: '/dashboard' }, { label: 'Examples' }, { label: 'Sales' }]">
+  <app-reusable-button label="New Order" icon="add" variant="flat" color="primary"
+    (clicked)="notification.info('New order form coming soon!')" />
+</app-page-header>
+
+<div class="mf-grid mf-grid--4" style="margin-bottom:20px">
+  @for (card of statCards; track card.id) { <app-stat-card [card]="card" /> }
+</div>
+
+<mat-tab-group animationDuration="200ms">
+  <mat-tab label="Orders">
+    <mat-card style="margin-top:16px;overflow:hidden">
+      <mat-card-content style="padding:0">
+        <app-reusable-table [data]="orders()" [columns]="orderColumns" [actions]="orderActions"
+          [loading]="loadingOrders()" [showSearch]="true" [stickyHeader]="true"
+          searchPlaceholder="Search orders..." emptyMessage="No orders found"
+          (actionClick)="onOrderAction($event)" />
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+  <mat-tab label="Customers">
+    <mat-card style="margin-top:16px;overflow:hidden">
+      <mat-card-content style="padding:0">
+        <app-reusable-table [data]="customers()" [columns]="customerColumns"
+          [showSearch]="true" [stickyHeader]="true"
+          emptyMessage="No customers found" />
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>

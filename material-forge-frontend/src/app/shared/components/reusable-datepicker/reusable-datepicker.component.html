@@ -1,0 +1,14 @@
+<mat-form-field [appearance]="appearance" style="width:100%">
+  @if (label) {
+    <mat-label>{{ label }}@if (required) { <span style="color:#f44336;margin-left:2px">*</span> }</mat-label>
+  }
+  <input matInput [matDatepicker]="picker" [formControl]="internalControl"
+    [placeholder]="placeholder" [readonly]="readonly"
+    [min]="min ?? null" [max]="max ?? null"
+    [attr.aria-label]="label" [attr.aria-required]="required"
+    (blur)="onBlur()" />
+  <mat-datepicker-toggle matIconSuffix [for]="picker" />
+  <mat-datepicker #picker [touchUi]="touchUi" [startView]="startView" />
+  @if (hint && !hasError) { <mat-hint>{{ hint }}</mat-hint> }
+  <mat-error role="alert">{{ errorMessage }}</mat-error>
+</mat-form-field>

@@ -1,0 +1,20 @@
+<mat-card class="stat-card" [routerLink]="card.route" [class.stat-card--clickable]="!!card.route">
+  <mat-card-content class="stat-card__content">
+    <div class="stat-card__info">
+      <p class="stat-card__title">{{ card.title }}</p>
+      <h2 class="stat-card__value">{{ card.value }}</h2>
+      @if (card.subtitle) {
+        <p class="stat-card__subtitle">{{ card.subtitle }}</p>
+      }
+      @if (card.trend !== undefined) {
+        <div class="stat-card__trend" [class.trend--up]="trendPositive" [class.trend--down]="!trendPositive">
+          <mat-icon>{{ trendPositive ? 'trending_up' : 'trending_down' }}</mat-icon>
+          <span>{{ card.trendLabel ?? (card.trend > 0 ? '+' : '') + card.trend + '%' }}</span>
+        </div>
+      }
+    </div>
+    <div class="stat-card__icon-wrap" [style.background]="card.iconBg">
+      <mat-icon [style.color]="card.iconColor">{{ card.icon }}</mat-icon>
+    </div>
+  </mat-card-content>
+</mat-card>

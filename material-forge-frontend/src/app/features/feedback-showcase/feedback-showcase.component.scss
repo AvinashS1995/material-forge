@@ -1,0 +1,6 @@
+.feedback-grid { display: flex; flex-direction: column; gap: 20px; }
+.btn-group { display: flex; flex-wrap: wrap; gap: 10px; }
+.section-label { font-size: 13px; font-weight: 500; color: var(--mf-text-secondary); margin-bottom: 8px; }
+.progress-section { display: flex; flex-direction: column; }
+.spinner-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.empty-states-row { display: flex; gap: 0; align-items: stretch; > * { flex: 1; } }

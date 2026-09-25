@@ -1,0 +1,26 @@
+<div class="page-header">
+  <div class="page-header__main">
+    <div class="page-header__text">
+      @if (breadcrumbs.length > 0) {
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          @for (crumb of breadcrumbs; track crumb.label; let last = $last) {
+            @if (crumb.route && !last) {
+              <a [routerLink]="crumb.route" class="breadcrumb-link">{{ crumb.label }}</a>
+              <mat-icon class="breadcrumb-sep">chevron_right</mat-icon>
+            } @else {
+              <span class="breadcrumb-current" [attr.aria-current]="last ? 'page' : null">{{ crumb.label }}</span>
+            }
+          }
+        </nav>
+      }
+      <div class="page-header__title-row">
+        @if (icon) { <mat-icon class="page-header__icon">{{ icon }}</mat-icon> }
+        <h1 class="page-header__title">{{ title }}</h1>
+      </div>
+      @if (subtitle) { <p class="page-header__subtitle">{{ subtitle }}</p> }
+    </div>
+    <div class="page-header__actions">
+      <ng-content />
+    </div>
+  </div>
+</div>

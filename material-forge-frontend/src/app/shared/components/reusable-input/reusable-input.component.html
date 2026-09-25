@@ -1,0 +1,49 @@
+<mat-form-field [appearance]="appearance" class="mf-input" [class.mf-input--error]="hasError">
+  @if (label) {
+    <mat-label>{{ label }}@if (required) { <span class="required-star" aria-hidden="true">*</span> }</mat-label>
+  }
+
+  @if (prefixIcon) {
+    <mat-icon matPrefix class="field-icon">{{ prefixIcon }}</mat-icon>
+  }
+  @if (prefix) {
+    <span matPrefix class="field-prefix">{{ prefix }}&nbsp;</span>
+  }
+
+  <input
+    matInput
+    [formControl]="internalControl"
+    [type]="effectiveType"
+    [placeholder]="placeholder"
+    [readonly]="readonly"
+    [maxlength]="maxLength ?? 524288"
+    [minlength]="minLength ?? 0"
+    [autocomplete]="autocomplete"
+    [attr.aria-label]="ariaLabel || label"
+    [attr.aria-required]="required"
+    [attr.aria-invalid]="hasError"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+  />
+
+  @if (type === 'password' && showPasswordToggle) {
+    <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
+      [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
+      <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+  } @else if (suffixIcon) {
+    <mat-icon matSuffix class="field-icon">{{ suffixIcon }}</mat-icon>
+  }
+  @if (suffix) {
+    <span matSuffix class="field-suffix">&nbsp;{{ suffix }}</span>
+  }
+
+  @if (hint && !hasError) {
+    <mat-hint>{{ hint }}</mat-hint>
+  }
+  @if (maxLength) {
+    <mat-hint align="end">{{ charCount }} / {{ maxLength }}</mat-hint>
+  }
+
+  <mat-error role="alert">{{ errorMessage }}</mat-error>
+</mat-form-field>

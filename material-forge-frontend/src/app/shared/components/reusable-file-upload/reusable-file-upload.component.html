@@ -1,0 +1,59 @@
+<div class="file-upload" [class.file-upload--dragover]="isDragOver()" [class.file-upload--disabled]="disabled">
+  @if (label) { <div class="file-upload__label">{{ label }}</div> }
+
+  <!-- Drop zone -->
+  <label class="file-upload__dropzone" [class.disabled]="disabled" [attr.aria-label]="'Upload files, ' + acceptDisplay">
+    <input type="file" [accept]="accept" [multiple]="multiple" [disabled]="disabled"
+      class="file-upload__input" (change)="onFileSelect($event)" />
+    <mat-icon class="drop-icon">cloud_upload</mat-icon>
+    <div class="drop-text">
+      <strong>Drag & drop files here</strong>
+      <span>or <span class="browse-link">click to browse</span></span>
+    </div>
+    <div class="drop-meta">
+      <span>Accepted: {{ acceptDisplay }}</span>
+      <span>Max size: {{ maxSize | formatFileSize }}</span>
+      @if (multiple) { <span>Max files: {{ maxFiles }}</span> }
+    </div>
+  </label>
+
+  <!-- Errors -->
+  @if (errors().length > 0) {
+    <div class="file-upload__errors">
+      @for (err of errors(); track err) {
+        <div class="file-error">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ err }}</span>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- File list -->
+  @if (files().length > 0) {
+    <div class="file-upload__list">
+      @for (f of files(); track f.id) {
+        <div class="file-item">
+          @if (f.previewUrl && showPreview) {
+            <img [src]="f.previewUrl" [alt]="f.name" class="file-preview" />
+          } @else {
+            <mat-icon class="file-icon">{{ f.type === 'application/pdf' ? 'picture_as_pdf' : 'insert_drive_file' }}</mat-icon>
+          }
+          <div class="file-info">
+            <span class="file-name" [matTooltip]="f.name">{{ f.name }}</span>
+            <span class="file-size">{{ f.size | formatFileSize }}</span>
+            @if (f.progress !== undefined && f.progress > 0 && f.progress < 100) {
+              <mat-progress-bar mode="determinate" [value]="f.progress" />
+            }
+          </div>
+          <button mat-icon-button class="remove-btn" (click)="removeFile(f.id)"
+            [attr.aria-label]="'Remove ' + f.name" type="button">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  @if (hint) { <div class="file-upload__hint">{{ hint }}</div> }
+</div>

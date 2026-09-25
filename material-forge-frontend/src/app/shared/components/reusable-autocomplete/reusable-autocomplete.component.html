@@ -1,0 +1,43 @@
+<mat-form-field [appearance]="appearance" class="mf-autocomplete">
+  @if (label) {
+    <mat-label>{{ label }}@if (required) { <span class="required-star">*</span> }</mat-label>
+  }
+
+  <mat-icon matPrefix class="search-icon">search</mat-icon>
+
+  <input
+    matInput
+    [formControl]="searchControl"
+    [matAutocomplete]="auto"
+    [placeholder]="placeholder"
+    [attr.aria-label]="label"
+    [attr.aria-required]="required"
+    (blur)="onBlur()" />
+
+  @if (isLoading() || loading) {
+    <mat-spinner matSuffix diameter="18" class="loading-spinner" />
+  } @else if (showClear && hasValue) {
+    <button mat-icon-button matSuffix type="button" (click)="onClear()" aria-label="Clear">
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+    (optionSelected)="onOptionSelected($event)">
+    @if (filteredOptions().length === 0 && !loading) {
+      <mat-option disabled>
+        <span class="no-results">{{ noResultsMessage }}</span>
+      </mat-option>
+    }
+    @for (opt of filteredOptions(); track opt.value) {
+      <mat-option [value]="opt.value" [disabled]="opt.disabled ?? false">
+        @if (opt.icon) { <mat-icon>{{ opt.icon }}</mat-icon> }
+        <span>{{ opt.label }}</span>
+        @if (opt.description) { <small class="option-desc">{{ opt.description }}</small> }
+      </mat-option>
+    }
+  </mat-autocomplete>
+
+  @if (hint && !hasError) { <mat-hint>{{ hint }}</mat-hint> }
+  <mat-error role="alert">{{ errorMessage }}</mat-error>
+</mat-form-field>
